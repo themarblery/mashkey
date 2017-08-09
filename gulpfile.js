@@ -181,18 +181,22 @@ function bundleScripts(entry, filename) {
 }
 
 gulp.task('js:head', function() {
-	return bundleScripts(src.theme.js + 'theme/head.js', 'head.js');
+	return bundleScripts(src.theme.js + '/head.js', 'head.js');
 });
 
 gulp.task('js:main', function() {
-	return bundleScripts(src.theme.js + 'theme/main.js', 'main.js');
+	return bundleScripts(src.theme.js + '/main.js', 'main.js');
 });
 
 gulp.task('js:admin', function() {
-	return bundleScripts(src.theme.js + 'admin/admin.js', 'admin.js');
+	return bundleScripts(src.theme.js + '/admin.js', 'admin.js');
 });
 
-gulp.task('js', gulp.series('js:head', 'js:main', 'js:admin'));
+gulp.task('js:customizer', function() {
+	return bundleScripts(src.theme.js + '/customizer.js', 'customizer.js');
+});
+
+gulp.task('js', gulp.series('js:head', 'js:main', 'js:admin', 'js:customizer'));
 
 /**
  * SVG Tasks
