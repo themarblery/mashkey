@@ -1,0 +1,38 @@
+$jacket: non-critical;
+
+// Third party styles
+// $fa-font-path: "//netdna.bootstrapcdn.com/font-awesome/4.7.0/fonts";
+// @import "#{$node_modules}/font-awesome/scss/font-awesome";
+
+/**
+ * Config
+ */
+@import "00-functions/*";
+@import "00-variables/*";
+@import "00-mixins/*";
+
+/**
+ * Normalize
+ */
+@import "../../../node_modules/normalize-scss/sass/normalize";
+@include normalize();
+
+/**
+ * Atoms - Basic building blocks
+ */
+@import "01-atoms/*";
+
+/**
+ * Molecules - Combinations of atoms
+ */
+@import "02-molecules/*";
+
+/**
+ * Organisms - UI components that create sections of the interface
+ */
+@import "03-organisms/*";
+
+/**
+ * Helpers - Override classes
+ */
+@import "04-helpers/*";

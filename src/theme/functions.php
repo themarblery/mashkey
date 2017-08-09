@@ -117,7 +117,7 @@ add_action( 'widgets_init', 'mk_widgets_init' );
  * Enqueue scripts and styles.
  */
 function mk_scripts() {
-	wp_enqueue_style( 'mashkey-style', get_template_directory_uri() . '/css/style.css' );
+	wp_enqueue_style( 'mashkey-style', get_template_directory_uri() . '/css/main.css' );
 
 	wp_enqueue_script( 'mashkey-head-js', get_template_directory_uri() . '/js/head.js', array(), '', false );
 

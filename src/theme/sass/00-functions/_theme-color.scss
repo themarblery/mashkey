@@ -1,0 +1,10 @@
+//---
+// Retrieves a theme color, with optional variant argument.
+// @see sass/00-utilities/var/_colors.scss for color map
+//
+// @param $color: The color variable to retrieve. 		Target size in px
+// @param $tone: The variant of the $color argument. 
+//---
+@function theme-color($color, $tone: "base") {
+	@return map-get(map-get($theme-colors, $color), $tone);
+}

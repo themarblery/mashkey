@@ -1,0 +1,58 @@
+// Idea from https://scotch.io/tutorials/aesthetic-sass-2-colors and http://erskinedesign.com/blog/friendlier-colour-names-sass-maps/
+
+//---
+// THEME COLORS
+//---
+$theme-colors: (
+	"blue": (
+		"dark": #1c496a,
+		"base": #3883c0,
+		"gray": #a5b6ca
+	),
+	"yellow": (
+		"base": #ffcc00
+	),
+	"gray": (
+		"darker": #333,
+		"dark": #777,
+		"base": #9a9a9a,
+		"light": #e9e9e9,
+		"lighter": #fafafa
+	)
+);
+
+//---
+// COMMON COLORS
+//---
+$primary-color: theme-color("blue", "dark");
+$secondary-color: theme-color("blue");
+$tertiary-color: theme-color("gray", "dark");
+$highlight-color: theme-color("yellow");
+
+// grays
+$gray-darker: theme-color("gray", "darker");
+$gray-dark: theme-color("gray", "dark");
+$gray: theme-color("gray");
+$gray-light: theme-color("gray", "light");
+$gray-lighter: theme-color("gray", "lighter");
+
+// text
+$body-color: $gray-dark;
+$base-font-color: $gray-darker;
+
+//---
+// SOCIAL MEDIA COLORS
+//---
+$facebook: #3b5998;
+$flickr: #ff0084;
+$googleplus: #dd4b39;
+$instagram: #517fa4;
+$linkedin: #007bb6;
+$pinterest: #cb2027;
+$rss: #f26522;
+$tumblr: #32506d;
+$twitter: #00aced;
+$vimeo: #aad450;
+$wordpress: #21759b;
+$yahoo: #7b0099;
+$youtube: #bb0000;

@@ -45,6 +45,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
+    "normalize-scss": "^7.0.0",
     "picturefill": "^3.0.2",
     "svgxuse": "^1.2.4",
     "vanilla-lazyload": "^7.2.2",

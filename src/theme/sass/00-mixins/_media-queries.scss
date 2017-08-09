@@ -1,0 +1,81 @@
+//---
+// MEDIA QUERIES
+//---
+
+@mixin mq($min-width, $max-width) {
+	$min-width: em($min-width);
+	$max-width: em($max-width);
+    @if $min-width and $max-width {
+        @media screen and (min-width: $min-width) and (max-width: $max-width) {
+            @content;
+        }
+    } @else if $min-width and not $max-width {
+        @media screen and (min-width: $min-width) {
+            @content;
+        }
+    } @else if $max-width and not $min-width {
+        @media screen and (max-width: $max-width) {
+            @content;
+        }
+    }
+}
+
+@mixin xxs-up {
+    @media (min-width: #{em($screen-xxs-min)}) {
+		@content;
+	}
+}
+
+@mixin xxs-down {
+    @media (max-width: #{em($screen-xxs-max)}) {
+		@content;
+	}
+}
+
+@mixin xs-up {
+    @media (min-width: #{em($screen-xs-min)}) {
+		@content;
+	}
+}
+
+@mixin xs-down {
+    @media (max-width: #{em($screen-xxs-max)}) {
+		@content;
+	}
+}
+
+@mixin sm-up {
+    @media (min-width: #{em($screen-sm-min)}) {
+		@content;
+	}
+}
+
+@mixin sm-down {
+    @media (max-width: #{em($screen-xs-max)}) {
+		@content;
+	}
+}
+
+@mixin md-up {
+    @media (min-width: #{em($screen-md-min)}) {
+		@content;
+	}
+}
+
+@mixin md-down {
+    @media (max-width: #{em($screen-sm-max)}) {
+		@content;
+	}
+}
+
+@mixin lg-up {
+    @media (min-width: #{em($screen-lg-min)}) {
+		@content;
+	}
+}
+
+@mixin lg-down {
+    @media (max-width: #{em($screen-md-max)}) {
+		@content;
+	}
+}

@@ -1,0 +1,7 @@
+//---
+// Convert pixels to rems.
+// @param $px-size		Target size in px
+//---
+@function em($pixels, $context: 16) {
+  @return #{ $pixels / $context }em;
+}
