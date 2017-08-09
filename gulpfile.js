@@ -278,8 +278,9 @@ gulp.task("build", gulp.series(
  */
  gulp.task('serve', function(done) {
 	browserSync.init({
-		proxy: host, // Rename this to your desired host name
-		port: 3333
+		proxy: {
+		    target: `https://${host}`,
+		}
 	},
 	function(){
 		console.log('SITE WATCHING FOR CHANGES');
