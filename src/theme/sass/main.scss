@@ -7,9 +7,9 @@ $jacket: non-critical;
 /**
  * Config
  */
-@import "00-functions/*";
-@import "00-variables/*";
-@import "00-mixins/*";
+@import "config/functions/*";
+@import "config/variables/*";
+@import "config/mixins/*";
 
 /**
  * Normalize
@@ -18,21 +18,16 @@ $jacket: non-critical;
 @include normalize();
 
 /**
- * Atoms - Basic building blocks
+ * HTML Elements
  */
-@import "01-atoms/*";
+@import "elements/*";
 
 /**
- * Molecules - Combinations of atoms
+ * Reusable Components
  */
-@import "02-molecules/*";
+@import "components/*";
 
 /**
- * Organisms - UI components that create sections of the interface
+ * Helper Classes (Overrides)
  */
-@import "03-organisms/*";
-
-/**
- * Helpers - Override classes
- */
-@import "04-helpers/*";
+@import "helpers/*";
