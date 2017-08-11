@@ -174,15 +174,13 @@ gulp.task('css:clean', function() {
 });
 
 /**
- * Process CSS
- *
  * Compile SASS, while adding sourcemaps and browser prefixes.
  */
  gulp.task('css:process', function() {
  	// Post CSS Processors
  	const processors = [
  		autoprefixer({
- 			browsers: ['last 4 versions', 'ie >= 9', 'iOS >= 7']
+ 			browsers: ['last 3 versions', 'ie >= 11', 'iOS >= 8']
  		})
  	];
 
@@ -238,23 +236,20 @@ gulp.task('js:clean', function() {
 	return del(globs.build.js)
 });
 
-gulp.task('js:head', function() {
-	return bundleScripts(`${src.js}/head.js`, 'head.js');
-});
-
-gulp.task('js:main', function() {
-	return bundleScripts(`${src.js}/main.js`, 'main.js');
-});
-
-gulp.task('js:admin', function() {
-	return bundleScripts(`${src.js}/admin.js`, 'admin.js');
-});
-
-gulp.task('js:customizer', function() {
-	return bundleScripts(`${src.js}/customizer.js`, 'customizer.js');
-});
-
-gulp.task('js:process', gulp.series('js:head', 'js:main', 'js:admin', 'js:customizer'));
+gulp.task('js:process', gulp.series(
+	function() {
+		return bundleScripts(`${src.js}/head.js`, 'head.js');
+	},
+	function() {
+		return bundleScripts(`${src.js}/main.js`, 'main.js');
+	},
+	function() {
+		return bundleScripts(`${src.js}/admin.js`, 'admin.js');
+	},
+	function() {
+		return bundleScripts(`${src.js}/customizer.js`, 'customizer.js');
+	}
+));
 
 gulp.task('js', gulp.series('js:clean', 'js:process', 'zip'));
 
@@ -349,7 +344,7 @@ gulp.task('watch', function(done) {
 	gulp.watch(globs.src.other, gulp.series('dist'));
 
 	// Sass Watcher
-	gulp.watch(globs.src.scss, gulp.series('css'));
+	gulp.watch(globs.src.sass, gulp.series('css'));
 
 	// JavaScript Watcher
 	gulp.watch(globs.src.js, gulp.series('js'));
