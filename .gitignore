@@ -1,16 +1,4 @@
-# Ignore everything in the root except the "wp-content" directory.
-/*
-
-# Don't ignore these things in the root.
-!.gitignore
-!.gitattributes
-!gulpfile.js
-!package.json
-!/src
-
-# Ignore the ".sass-cache" directory and .DS_Store files
+/site
 .sass-cache/
 .DS_Store
-
-# Ignore node modules
 node_modules/

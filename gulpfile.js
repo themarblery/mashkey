@@ -3,37 +3,37 @@
 // --------------------------------
 
 // Gulp - Duh
-var gulp = require('gulp');
+const gulp 			= require('gulp');
 
-// CSS Related
-var sass = require('gulp-sass');
-var bulkSass = require('gulp-sass-glob-import');
-var postcss = require('gulp-postcss');
-var sourcemaps = require('gulp-sourcemaps');
-var autoprefixer = require('autoprefixer');
+// CSS
+const sass 			= require('gulp-sass');
+const postcss 		= require('gulp-postcss');
+const bulkSass 		= require('gulp-sass-glob-import');
+const autoprefixer 	= require('autoprefixer');
 
-// JavaScript Related
-var uglify = require('gulp-uglify');
-var browserify = require('browserify');
-var babelify = require('babelify');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
+// JavaScript
+const uglify 		= require('gulp-uglify');
+const babelify 		= require('babelify');
+const browserify 	= require('browserify');
 
-// Tasks
-var clean = require('gulp-clean');
-var plumber = require('gulp-plumber');
-var notify = require('gulp-notify');
-var browserSync = require('browser-sync').create();
-var fs = require('fs');
+// SVG
+const svgo 			= require('gulp-svgo');
+const svgmin 		= require('gulp-svgmin');
+const svgstore 		= require('gulp-svgstore');
+const inlineSvg 	= require('gulp-inline-svg');
 
-var svgo = require('gulp-svgo');
-var inlineSvg = require('gulp-inline-svg');
-var svgmin = require('gulp-svgmin');
-var svgstore = require('gulp-svgstore');
-var cheerio = require('gulp-cheerio'); // lets us use a lean library of core jQuery to modify files. https://cheerio.js.org/
-
-// New Sync/Copy task dependencies
-var path = require('path');
+// Other
+const fs 			= require('fs');
+const del 			= require('del');
+const zip 			= require('gulp-zip');
+const path 			= require('path');
+const source 		= require('vinyl-source-stream');
+const buffer 		= require('vinyl-buffer');
+const notify 		= require('gulp-notify');
+const plumber 		= require('gulp-plumber');
+const cheerio 		= require('gulp-cheerio');
+const sourcemaps 	= require('gulp-sourcemaps');
+const browserSync 	= require('browser-sync').create();
 
 
 // --------------------------------
@@ -44,60 +44,91 @@ var path = require('path');
  * Let's us access the contents of package.json as an object.
  * @type {Object}
  */
-var packagejson = JSON.parse(fs.readFileSync('./package.json'));
+const packagejson = JSON.parse(fs.readFileSync('./package.json'));
 
 /**
  * The host you'd like to use while working locally.
  * @type {String}
  */
-var host = "mashkey.com";
-
-// Root Paths
-var src = {
-	root: "./src/",
-	theme: {}
-};
-src.theme.root				= src.root + "theme/";
-src.theme.sass 				= src.theme.root + "sass/";
-src.theme.sassVarsDir       = src.theme.sass + "00-utilities/vars/";
-src.theme.js 				= src.theme.root + "js/";
-src.theme.fonts				= src.theme.root + "fonts/";
-src.theme.svgs				= src.theme.root + "svgs/";
-src.theme.icons				= src.theme.svgs + "icons/";
-src.theme.images			= src.theme.root + "images/";
-
-// WordPress Paths
-var wp = {
-	root: "./",
-	theme: {}
-};
-wp.content 		= "./wp-content/";
-wp.themes 		= wp.content + "themes/";
-wp.theme.root 	= wp.themes + packagejson.name + "/";
-wp.theme.core 	= wp.theme.root + "core/";
-wp.theme.css 	= wp.theme.root + "css/";
-wp.theme.maps 	= wp.theme.root + "maps/";
-wp.theme.js  	= wp.theme.root + "js/";
-wp.theme.fonts  = wp.theme.root + "fonts/";
-wp.theme.svgs  	= wp.theme.root + "svgs/";
-wp.theme.icons  = wp.theme.root + "acf-em-icon-picker/";
-wp.theme.images = wp.theme.root + "images/";
-wp.theme.acf 	= wp.theme.root + "acf-json/";
+const host = "mashkey.com";
 
 /**
- * All theme files excepty js and sass
+ * Paths to files in /src directory.
+ * @type {Object}
  */
-var themeFiles = [
-	src.theme.root + '**/*',
-	'!' + src.theme.root + 'sass{,/**}',
-	'!' + src.theme.root + 'js{,/**}'
-];
+const src = {
+	root: './src',
+};
 
+src.sass = `${src.root}/sass`;
+src.js = `${src.root}/js`;
+src.svg = `${src.root}/svg`;
+src.icons = `${src.svg}/icons`;
+
+/**
+ * Paths to files in /build directory.
+ * @type {Object}
+ */
+const build = {
+	root: './build',
+};
+
+build.css = `${build.root}/css`;
+build.js = `${build.root}/js`;
+build.svg = `${build.root}/svg`;
+build.icons = `${build.svg}/icons`;
+
+/**
+ * Reusable file matching globs.
+ * @type {Object}
+ */
+const globs = {
+	src: {
+		js: [
+			`${src.js}/**/*.js`
+		],
+		sass: [
+			`${src.sass}/**/*.scss`
+		],
+		svg: [
+			`${src.svg}/**/*.svg`
+		],
+		icons: [
+			`${src.icons}/**/*.svg`
+		],
+		other: [
+			`${src.root}/**/*`,
+		  	`!${src.sass}{,/**}`,
+		  	`!${src.js}{,/**}`,
+			`!${src.svg}{,/**}`,
+		],
+	},
+	build: {
+		js: [
+			`${build.js}/**/*.js`
+		],
+		css: [
+			`${build.css}/**/*.css`
+		],
+		svg: [
+			`${build.svg}/**/*.svg`
+		],
+		icons: [
+			`${build.icons}/**/*.svg`
+		],
+		other: [
+			`${build.root}/**/*`,
+		  	`!${build.css}{,/**}`,
+		  	`!${build.js}{,/**}`,
+			`!${build.svg}{,/**}`,
+		],
+	}
+};
 
 /**
  * Gulp Error Handling
  */
-var plumberErrorHandler = {
+const plumberErrorHandler = {
 	errorHandler: notify.onError({
 		title: 'Gulp - Error',
 		message: 'Error: <%= error.message %>'
@@ -105,20 +136,41 @@ var plumberErrorHandler = {
 };
 
 /**
- * Clean out the theme directory in wp-content/themes/{packagejson.name}
+ * Delete all files, except js, css, and svg, from build directory.
  */
-gulp.task("clean", function() {
-	return gulp.src([wp.theme.root], {read: false})
-		.pipe(clean());
+gulp.task('clean', function() {
+	return del(globs.build.other);
 });
 
 /**
- * Copy everything but source sass and javascript files over to wp-content/themes/{packagejson.name}
+ * Move Files into Build Folder
  */
-gulp.task("copy", function() {
-	return gulp.src(themeFiles, { dot: true })
-		.pipe(plumber(plumberErrorHandler))
-		.pipe(gulp.dest(wp.theme.root));
+gulp.task('copy', function() {
+	console.log('## Move all files (except .scss, .js, and .svg) into the build directory ##');
+	return gulp.src(globs.src.other)
+		.pipe(gulp.dest(build.root));
+});
+
+/**
+ * Compress Build Files into Zip
+ * Dependent on the build task completing
+ *
+ * @link https://www.npmjs.com/package/gulp-zip
+ */
+gulp.task('zip', function() {
+	console.log('## Pack up our files into a zip into the dist directory ##');
+	return gulp.src(`${build.root}/**`)
+    	.pipe(zip(`${packagejson.name}.zip`))
+    	.pipe(gulp.dest('dist'));
+});
+
+gulp.task('dist', gulp.series('clean', 'copy', 'zip'));
+
+/**
+ * Clean out build/css directory.
+ */
+gulp.task('css:clean', function() {
+	return del(globs.build.js)
 });
 
 /**
@@ -126,15 +178,15 @@ gulp.task("copy", function() {
  *
  * Compile SASS, while adding sourcemaps and browser prefixes.
  */
- gulp.task('css', function() {
+ gulp.task('css:process', function() {
  	// Post CSS Processors
- 	var processors = [
+ 	const processors = [
  		autoprefixer({
  			browsers: ['last 4 versions', 'ie >= 9', 'iOS >= 7']
  		})
  	];
 
- 	return gulp.src([src.theme.sass + '**/*.scss'])
+ 	return gulp.src(globs.src.sass)
  		.pipe(plumber(plumberErrorHandler))
 		.pipe(sourcemaps.init())
  		.pipe(bulkSass())
@@ -144,9 +196,11 @@ gulp.task("copy", function() {
 		.on('error', sass.logError))
  		.pipe(postcss(processors))
 		.pipe(sourcemaps.write('../maps'))
- 		.pipe(gulp.dest(wp.theme.css))
+ 		.pipe(gulp.dest(build.css))
 		.pipe(browserSync.stream({match: '**/*.css'}));
 });
+
+gulp.task('css', gulp.series('css:clean', 'css:process', 'zip'));
 
 /**
  * Javascript
@@ -177,26 +231,32 @@ function bundleScripts(entry, filename) {
 		.pipe(sourcemaps.init({loadMaps: true}))
         .pipe(uglify())
         .pipe(sourcemaps.write('../maps'))
-		.pipe(gulp.dest(wp.theme.js));
+		.pipe(gulp.dest(build.js));
 }
 
+gulp.task('js:clean', function() {
+	return del(globs.build.js)
+});
+
 gulp.task('js:head', function() {
-	return bundleScripts(src.theme.js + '/head.js', 'head.js');
+	return bundleScripts(`${src.js}/head.js`, 'head.js');
 });
 
 gulp.task('js:main', function() {
-	return bundleScripts(src.theme.js + '/main.js', 'main.js');
+	return bundleScripts(`${src.js}/main.js`, 'main.js');
 });
 
 gulp.task('js:admin', function() {
-	return bundleScripts(src.theme.js + '/admin.js', 'admin.js');
+	return bundleScripts(`${src.js}/admin.js`, 'admin.js');
 });
 
 gulp.task('js:customizer', function() {
-	return bundleScripts(src.theme.js + '/customizer.js', 'customizer.js');
+	return bundleScripts(`${src.js}/customizer.js`, 'customizer.js');
 });
 
-gulp.task('js', gulp.series('js:head', 'js:main', 'js:admin', 'js:customizer'));
+gulp.task('js:process', gulp.series('js:head', 'js:main', 'js:admin', 'js:customizer'));
+
+gulp.task('js', gulp.series('js:clean', 'js:process', 'zip'));
 
 /**
  * SVG Tasks
@@ -210,18 +270,17 @@ gulp.task('js', gulp.series('js:head', 'js:main', 'js:admin', 'js:customizer'));
  * @ref: https://www.npmjs.com/package/gulp-inline-svg
  */
 gulp.task('svg:sass-partial', function() {
-    return gulp
-        .src([src.theme.svgs + '**/*.svg'])
+    return gulp.src(globs.src.svg)
         .pipe(svgo())
         .pipe(inlineSvg())
-        .pipe(gulp.dest(src.theme.sassVarsDir));
+        .pipe(gulp.dest(`${src.scss}/config/variables`));
 });
 
 //---
 // SVG SPRITE TASK
 //---
 gulp.task('svg:sprite', function () {
-	return gulp.src([src.theme.icons + '**/*.svg', '!' + src.theme.icons + '**/*-white.svg'])
+	return gulp.src(globs.src.icons)
 		.pipe(cheerio({
 			run: function ($) {
 				$('[stroke]').each(function(){
@@ -256,31 +315,20 @@ gulp.task('svg:sprite', function () {
 			};
 		}))
 		.pipe(svgstore())
-		.pipe(gulp.dest(wp.theme.icons))
+		.pipe(gulp.dest(build.icons))
 });
 
-gulp.task('svg', gulp.series('svg:sass-partial', 'svg:sprite'));
+gulp.task('svg:clean', function() {
+	return del(globs.build.svg)
+});
 
-gulp.task("build", gulp.series(
-	'clean',
-	'svg',
-	'css',
-	'js',
-	'copy',
-	function(done) {
-		done();
-    }
-));
-
+gulp.task('svg', gulp.series('svg:clean', 'svg:sass-partial', 'svg:sprite', 'zip'));
 
 // --------------------------------
 // Server Tasks
 // --------------------------------
 
-/**
- * Serves up the site using a proxy server which you need to provide
- */
- gulp.task('serve', function(done) {
+gulp.task('serve', function(done) {
 	browserSync.init({
 		proxy: {
 		    target: `https://${host}`,
@@ -290,24 +338,24 @@ gulp.task("build", gulp.series(
 		console.log('SITE WATCHING FOR CHANGES');
 		done();
 	});
- });
+});
 
 // --------------------------------
 // Watch Tasks
 // --------------------------------
 
 gulp.task('watch', function(done) {
-	// Theme Watcher
-	gulp.watch(themeFiles, gulp.series(['copy']));
+	// General Watcher
+	gulp.watch(globs.src.other, gulp.series('dist'));
 
 	// Sass Watcher
-	gulp.watch(src.theme.sass + '**/*.scss', gulp.series('css'));
+	gulp.watch(globs.src.scss, gulp.series('css'));
+
+	// JavaScript Watcher
+	gulp.watch(globs.src.js, gulp.series('js'));
 
 	// SVG Watcher
-    gulp.watch(src.theme.svgs + '**/*.svg', gulp.series(['svg:sass-partial', 'svg:sprite']));
-
-	// Scripts Watcher
-	gulp.watch(src.theme.js + '**/*.js', gulp.series('js'));
+	gulp.watch(globs.src.svgs, gulp.series('svg'));
 
 	done();
 });
@@ -318,7 +366,10 @@ gulp.task('watch', function(done) {
 // --------------------------------
 
 gulp.task('default', gulp.series(
-	'build',
+	'css',
+	'js',
+	'svg',
+	'dist',
 	'serve',
 	'watch',
 	function(done) {
