@@ -42,8 +42,8 @@
 			endif; ?>
 		</div>
 
-		<nav class="site__navigation">
-			<button class="menu-toggle" aria-controls="main-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'mashkey' ); ?></button>
+		<nav class="site__nav">
+			<button class="navicon" aria-controls="main-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'mashkey' ); ?></button>
 			<?php
 				wp_nav_menu( array(
 					'theme_location' => 'main-menu',
@@ -53,4 +53,4 @@
 		</nav>
 	</header>
 
-	<div id="content" class="site__content">
+	<main id="content" class="site__content">
