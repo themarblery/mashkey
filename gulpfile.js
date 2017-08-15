@@ -199,7 +199,7 @@ gulp.task('css:clean', function() {
 		.pipe(browserSync.stream({match: '**/*.css'}));
 });
 
-gulp.task('css', gulp.series('css:clean', 'css:process', 'zip'));
+gulp.task('css', gulp.series('css:clean', 'css:process'));
 
 /**
  * Javascript
@@ -252,7 +252,7 @@ gulp.task('js:process', gulp.series(
 	}
 ));
 
-gulp.task('js', gulp.series('js:clean', 'js:process', 'zip'));
+gulp.task('js', gulp.series('js:clean', 'js:process'));
 
 /**
  * SVG Tasks
@@ -318,7 +318,7 @@ gulp.task('svg:clean', function() {
 	return del(globs.build.svg)
 });
 
-gulp.task('svg', gulp.series('svg:clean', 'svg:sass-partial', 'svg:sprite', 'zip'));
+gulp.task('svg', gulp.series('svg:clean', 'svg:sass-partial', 'svg:sprite'));
 
 // --------------------------------
 // Server Tasks
@@ -345,13 +345,13 @@ gulp.task('watch', function(done) {
 	gulp.watch(globs.src.other, gulp.series('dist'));
 
 	// Sass Watcher
-	gulp.watch(globs.src.sass, gulp.series('css'));
+	gulp.watch(globs.src.sass, gulp.series('css', 'zip'));
 
 	// JavaScript Watcher
-	gulp.watch(globs.src.js, gulp.series('js'));
+	gulp.watch(globs.src.js, gulp.series('js', 'zip'));
 
 	// SVG Watcher
-	gulp.watch(globs.src.svgs, gulp.series('svg'));
+	gulp.watch(globs.src.svgs, gulp.series('svg', 'zip'));
 
 	done();
 });
