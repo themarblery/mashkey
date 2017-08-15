@@ -121,6 +121,7 @@ const globs = {
 		  	`!${build.css}{,/**}`,
 		  	`!${build.js}{,/**}`,
 			`!${build.svg}{,/**}`,
+			`!${build.root}/maps{,/**}`,
 		],
 	}
 };
