@@ -41,12 +41,12 @@
     "gulp-svgstore": "^6.1.0",
     "gulp-uglify": "^2.0.0",
     "gulp-zip": "^4.0.0",
+    "normalize-scss": "^7.0.0",
     "path": "^0.12.7",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "normalize-scss": "^7.0.0",
     "picturefill": "^3.0.2",
     "svgxuse": "^1.2.4",
     "vanilla-lazyload": "^7.2.2",
