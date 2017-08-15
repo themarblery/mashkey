@@ -10,11 +10,12 @@
  */
 
 ?>
-
-	</main><!-- #content -->
+			</section><!-- .content -->
+		</div><!-- .inner -->
+	</main><!-- .site__content -->
 
 	<footer id="colophon" class="site-footer"></footer><!-- #colophon -->
-</div><!-- #page -->
+</div><!-- .site -->
 
 <?php wp_footer(); ?>
 

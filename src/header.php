@@ -25,32 +25,36 @@
 	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'mashkey' ); ?></a>
 
 	<header class="site__header">
-		<div class="site__branding">
-			<?php
-			the_custom_logo();
-			if ( is_front_page() && is_home() ) : ?>
-				<h1 class="site__title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-			<?php else : ?>
-				<p class="site__title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-			<?php
-			endif;
+		<div class="inner">
+			<div class="site__branding">
+				<?php
+				the_custom_logo();
+				if ( is_front_page() && is_home() ) : ?>
+					<h1 class="site__title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+				<?php else : ?>
+					<p class="site__title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+				<?php
+				endif;
 
-			$description = get_bloginfo( 'description', 'display' );
-			if ( $description || is_customize_preview() ) : ?>
-				<p class="site__description"><?php echo $description; /* WPCS: xss ok. */ ?></p>
-			<?php
-			endif; ?>
+				$description = get_bloginfo( 'description', 'display' );
+				if ( $description || is_customize_preview() ) : ?>
+					<p class="site__description"><?php echo $description; /* WPCS: xss ok. */ ?></p>
+				<?php
+				endif; ?>
+			</div>
+
+			<nav class="site__nav">
+				<button class="navicon" aria-controls="main-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'mashkey' ); ?></button>
+				<?php
+					wp_nav_menu( array(
+						'theme_location' => 'main-menu',
+						'menu_id'        => 'main-menu',
+					) );
+				?>
+			</nav>
 		</div>
-
-		<nav class="site__nav">
-			<button class="navicon" aria-controls="main-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'mashkey' ); ?></button>
-			<?php
-				wp_nav_menu( array(
-					'theme_location' => 'main-menu',
-					'menu_id'        => 'main-menu',
-				) );
-			?>
-		</nav>
 	</header>
 
 	<main id="content" class="site__content">
+		<div class="inner">
+			<section class="content">

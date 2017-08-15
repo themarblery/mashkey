@@ -65,5 +65,15 @@ function mk_setup() {
 		'flex-width'  => true,
 		'flex-height' => true,
 	) );
+
+	add_theme_support( 'post-formats', array(
+		'aside',
+		'audio',
+		'gallery' ,
+		'image',
+		'link',
+		'quote',
+		'video'
+	) );
 }
 add_action( 'after_setup_theme', 'mk_setup' );
